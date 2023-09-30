@@ -55,10 +55,19 @@ class Login(Resource):
                 return {"message":"Password incorrect."}
         else:
             return {"message":"No user found."}, 401
+        
+class Logout(Resource):
+    def delete(self):
+        if session['user_id']:
+            session['user_id']=None
+            return {"message":"Successfully logged out."}, 204
+        else:
+            return {"message":"User not logged in."}, 401
 
 app.add_resource(Signup, '/signup', endpoint='signup')
 app.add_resource(CheckSession, '/check_session', endpoint='check_session')
 app.add_resource(Login, '/login', endpoint='login')
+app.add_resource(Logout, '/logout', endpoint='logout')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
