@@ -64,10 +64,18 @@ class Logout(Resource):
         else:
             return {"message":"User not logged in."}, 401
 
+
+class TripsIndex(Resource):
+    def get(self):
+        trips = [trip.to_dict() for trip in Trip.query.all()]
+        return trips, 200
+    
+
 api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(CheckSession, '/check_session', endpoint='check_session')
 api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(Logout, '/logout', endpoint='logout')
+api.add_resource(TripsIndex, '/trips_index', endpoint='trips_index')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
