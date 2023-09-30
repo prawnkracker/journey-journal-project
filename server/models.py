@@ -66,7 +66,7 @@ class Trip(db.Model, SerializerMixin):
     serialize_rules = ('-reviews.trip')
 
     id = db.Column(db.Integer, primary_key=True)
-    destination = db.Column(db.String(100), nullable=False)
+    destination = db.Column(db.String(100), nullable=False, unique=True)
     approximate_cost = db.Column(db.Integer)
     description = db.Column(db.String(500))
     trip_image_url = db.Column(db.String)

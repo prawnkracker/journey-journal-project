@@ -45,3 +45,34 @@ if __name__ == '__main__':
 
             users.append(user)
         db.session.add_all(users)
+                
+        print("Creating trips...")
+        # create trips
+        trips=[
+            User(
+                destination='Tokyo',
+                approximate_cost=randint(100, 4000),
+                description=fake.paragraph(nb_sentences=4),
+                trip_image_url=fake.image_url(width=400, height=400)
+            ),
+            User(
+                destination='Paris',
+                approximate_cost=randint(100, 4000),
+                description=fake.paragraph(nb_sentences=4),
+                trip_image_url=fake.image_url(width=400, height=400)
+            ),
+            User(
+                destination='Seoul',
+                approximate_cost=randint(100, 4000),
+                description=fake.paragraph(nb_sentences=4),
+                trip_image_url=fake.image_url(width=400, height=400)
+            ),
+            User(
+                destination='Istanbul',
+                approximate_cost=randint(100, 4000),
+                description=fake.paragraph(nb_sentences=4),
+                trip_image_url=fake.image_url(width=400, height=400)
+            )
+        ]
+
+        db.session.add_all(trips)
