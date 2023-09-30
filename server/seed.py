@@ -76,3 +76,24 @@ if __name__ == '__main__':
         ]
 
         db.session.add_all(trips)
+
+        print("Creating reviews...")
+        # create reviews
+        reviews = []
+
+        for _ in range(20):
+            # choose a random user
+            user = rc(users)
+            # choose a random trip from the users list of trips
+            trip = rc(user.trips)
+            review_data = Review(
+                review=fake.sentence(nb_words=7),
+                user_id=user.id,
+                trip_id=trip.id
+            )
+            reviews.append(review_data)
+        db.session.add_all(reviews)
+
+        db.session.commit()
+
+        print("Seeding complete")
