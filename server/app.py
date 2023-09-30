@@ -70,6 +70,25 @@ class TripsIndex(Resource):
         trips = [trip.to_dict() for trip in Trip.query.all()]
         return trips, 200
     
+    def post(self):
+        json=request.get_json()
+        if not session['user_id']:
+            return {"Error":"Unauthorized."}, 401
+        else:
+            new_trip= Trip(
+                destination=json.get('destination'),
+                approximate_cost=json.get('approximate_cost'),
+                description=json.get('description'),
+                trip_image_url=json.get('trip_image_url')
+            )
+            db.session.add(new_trip)
+            try:
+                db.session.commit()
+                return new_trip.to_dict(), 201
+            except IntegrityError as e:
+                db.session.rollack()
+                return {"error":"Unprocessable entity."}, 422
+    
 
 api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(CheckSession, '/check_session', endpoint='check_session')
