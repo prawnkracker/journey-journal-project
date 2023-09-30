@@ -31,7 +31,16 @@ class Signup(Resource):
         except IntegrityError as e:
             db.session.rollback()
             return {"message":"Unprocessable entity."}, 422
+class CheckSession(Resource):
+    def get(self):
+        user = User.query.filter(User.id == session['user_id']).first()
+        if user:
+            return user.to_dict(), 200
+        else:
+            return {"message":"User not logged in."}, 401
 
+app.add_resource(Signup, '/signup', endpoint='signup')
+app.add_resource(CheckSession, '/check_session', endpoint='check_session')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
