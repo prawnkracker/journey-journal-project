@@ -45,29 +45,30 @@ if __name__ == '__main__':
 
             users.append(user)
         db.session.add_all(users)
+        db.session.commit()
                 
         print("Creating trips...")
         # create trips
         trips=[
-            User(
+            Trip(
                 destination='Tokyo',
                 approximate_cost=randint(100, 4000),
                 description=fake.paragraph(nb_sentences=4),
                 trip_image_url=fake.image_url(width=400, height=400)
             ),
-            User(
+            Trip(
                 destination='Paris',
                 approximate_cost=randint(100, 4000),
                 description=fake.paragraph(nb_sentences=4),
                 trip_image_url=fake.image_url(width=400, height=400)
             ),
-            User(
+            Trip(
                 destination='Seoul',
                 approximate_cost=randint(100, 4000),
                 description=fake.paragraph(nb_sentences=4),
                 trip_image_url=fake.image_url(width=400, height=400)
             ),
-            User(
+            Trip(
                 destination='Istanbul',
                 approximate_cost=randint(100, 4000),
                 description=fake.paragraph(nb_sentences=4),
@@ -76,6 +77,7 @@ if __name__ == '__main__':
         ]
 
         db.session.add_all(trips)
+        db.session.commit()
 
         print("Creating reviews...")
         # create reviews
@@ -84,8 +86,7 @@ if __name__ == '__main__':
         for _ in range(20):
             # choose a random user
             user = rc(users)
-            # choose a random trip from the users list of trips
-            trip = rc(user.trips)
+            trip = rc(trips)
             review_data = Review(
                 review=fake.sentence(nb_words=7),
                 user_id=user.id,
@@ -93,7 +94,6 @@ if __name__ == '__main__':
             )
             reviews.append(review_data)
         db.session.add_all(reviews)
-
         db.session.commit()
 
         print("Seeding complete")
