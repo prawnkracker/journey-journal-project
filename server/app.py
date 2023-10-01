@@ -3,7 +3,7 @@
 # Standard library imports
 
 # Remote library imports
-from flask import request, session, make_response
+from flask import request, session, make_response, jsonify
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 
@@ -13,6 +13,9 @@ from config import app, db, api
 from models import User, Review, Trip
 
 # Views go here!
+class Homepage(Resource):
+    def get(self):
+        return 'Welcome to the Journey Journal API'
 
 class Signup(Resource):
     def post(self):
@@ -86,15 +89,23 @@ class TripsIndex(Resource):
                 db.session.commit()
                 return new_trip.to_dict(), 201
             except IntegrityError as e:
-                db.session.rollack()
+                db.session.rollback()
                 return {"error":"Unprocessable entity."}, 422
-    
+            
+class TripById(Resource):
+    def get(self, id):
+        trip = Trip.query.filter(Trip.id==id).first()
+        if trip is None:
+            return {"message":"No trip found."}, 404
+        return trip.to_dict(), 200
 
+api.add_resource(Homepage, '/', endpoint='/')
 api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(CheckSession, '/check_session', endpoint='check_session')
 api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(TripsIndex, '/trips_index', endpoint='trips_index')
+api.add_resource(TripById, '/trip/<int:id>', endpoint='trip/<int:id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
