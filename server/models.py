@@ -15,7 +15,7 @@ trip_user = db.Table(
 # user model with password hashing
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
-    serialize_rules = ('-reviews.user')
+    serialize_rules = ('-reviews.user', '-trips.users.reviews',)
     
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False, unique=True)
@@ -47,7 +47,7 @@ class User(db.Model, SerializerMixin):
 class Review(db.Model, SerializerMixin):
     __tablename__ = 'reviews'
     __table_args__ = (db.CheckConstraint('LENGTH(review) >= 25'),)
-    serialize_rules = ('-user.reviews'), ('-trip.reviews')
+    serialize_rules = ('-user.reviews', '-trip.reviews',)
 
     id = db.Column(db.Integer, primary_key=True)
     review = db.Column(db.String, nullable=False)
@@ -60,10 +60,10 @@ class Review(db.Model, SerializerMixin):
     def __repr__(self):
         return f'Review {self.review}'
 
-#trip model     
+# trip model     
 class Trip(db.Model, SerializerMixin):
     __tablename__ = 'trips'
-    serialize_rules = ('-reviews.trip')
+    serialize_rules = ('-reviews.trip', '-users.trips.reviews',)
 
     id = db.Column(db.Integer, primary_key=True)
     destination = db.Column(db.String(100), nullable=False, unique=True)
