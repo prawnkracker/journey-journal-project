@@ -54,25 +54,25 @@ if __name__ == '__main__':
                 destination='Tokyo',
                 approximate_cost=randint(100, 4000),
                 description=fake.paragraph(nb_sentences=4),
-                trip_image_url=fake.image_url(width=400, height=400)
+                trip_image_url='https://upload.wikimedia.org/wikipedia/commons/b/b2/Skyscrapers_of_Shinjuku_2009_January.jpg'
             ),
             Trip(
                 destination='Paris',
                 approximate_cost=randint(100, 4000),
                 description=fake.paragraph(nb_sentences=4),
-                trip_image_url=fake.image_url(width=400, height=400)
+                trip_image_url='https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg/1200px-La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg'
             ),
             Trip(
                 destination='Seoul',
                 approximate_cost=randint(100, 4000),
                 description=fake.paragraph(nb_sentences=4),
-                trip_image_url=fake.image_url(width=400, height=400)
+                trip_image_url='https://media.cnn.com/api/v1/images/stellar/prod/160621115931-seoul-after.jpg?q=w_4222,h_2818,x_0,y_0,c_fill'
             ),
             Trip(
                 destination='Istanbul',
                 approximate_cost=randint(100, 4000),
                 description=fake.paragraph(nb_sentences=4),
-                trip_image_url=fake.image_url(width=400, height=400)
+                trip_image_url='https://upload.wikimedia.org/wikipedia/commons/5/53/Bosphorus_Bridge_%28235499411%29.jpeg'
             )
         ]
 
