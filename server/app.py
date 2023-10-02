@@ -121,6 +121,24 @@ class ReviewsByUserId(Resource):
         if reviews is None:
             return {"message":"This user has no reviews yet."}, 404
         return reviews, 200
+    
+    def post(self):
+        json=request.get_json()
+        if session['user_id'] is None:
+            return {"Error":"Unauthorized"}, 401
+        else:
+            new_review= Review(
+                review=json.get('review'),
+                user_id = session['user_id'],
+                trip_id = json.get('trip_id')
+            )
+            db.session.add(new_review)
+            try:
+                db.session.commit()
+                return new_review.to_dict(only=('id', 'review','date_created','date_updated','trip_id'))
+            except IntegrityError as e:
+                db.session.rollback()
+                return {"Error":"Unprocessable entity."}, 422
 
 api.add_resource(Homepage, '/', endpoint='/')
 api.add_resource(Signup, '/signup', endpoint='signup')
