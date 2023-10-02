@@ -104,9 +104,22 @@ class ReviewsByTripId(Resource):
         trip = Trip.query.filter(Trip.id == id).first()
         if trip is None:
             return {"message":"No trip found."}, 404
-        reviews = [r.to_dict(only=('id','review')) for r in Review.query.filter(Review.trip_id == trip.id).all()]
+        reviews = [r.to_dict(only=('id','review', 'date_created', 'date_updated')) for r in Review.query.filter(Review.trip_id == trip.id).all()]
         if reviews is None:
             return {"message":"This trip has no reviews yet."}, 404
+        return reviews, 200
+    
+class ReviewsByUserId(Resource):
+    
+    def get(self):
+        if session['user_id'] is None:
+            return {"Error":"Unauthorized."}, 401
+        user = User.query.filter(User.id == session['user_id']).first()
+        if user is None:
+            return {"message":"No user found."},  404
+        reviews = [r.to_dict(only=('id','review', 'date_created', 'date_updated')) for r in Review.query.filter(Review.user_id == user.id).first()]
+        if reviews is None:
+            return {"message":"This user has no reviews yet."}, 404
         return reviews, 200
 
 api.add_resource(Homepage, '/', endpoint='/')
@@ -116,7 +129,9 @@ api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(TripsIndex, '/trips_index', endpoint='trips_index')
 api.add_resource(TripById, '/trip/<int:id>', endpoint='trip/<int:id>')
-api.add_resource(ReviewsByTripId, '/reviews_by_trip_id/<int:id>', endpoint='/reviews_by_trip_id/<int:id>')
+api.add_resource(ReviewsByTripId, '/reviews_by_trip_id/<int:id>', endpoint='reviews_by_trip_id/<int:id>')
+api.add_resource(ReviewsByUserId, '/reviews_by_user_id/<int:id>', endpoint='reviews_by_user_id/<int:id>')
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
