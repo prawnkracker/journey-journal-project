@@ -30,7 +30,7 @@ class Signup(Resource):
             db.session.add(user)
             db.session.commit()
             session['user_id']= user.id
-            return user.to_dict(), 201
+            return user.to_dict(only=('id','username','bio','image_url')), 201
         except IntegrityError as e:
             db.session.rollback()
             return {"message":"Unprocessable entity."}, 422
@@ -39,7 +39,7 @@ class CheckSession(Resource):
     def get(self):
         user = User.query.filter(User.id == session['user_id']).first()
         if user:
-            return user.to_dict(), 200
+            return user.to_dict(only=('id','username','bio','image_url')), 200
         else:
             return {"message":"User not logged in."}, 401
         
@@ -53,7 +53,7 @@ class Login(Resource):
         if user:
             if user.authenticate(password):
                 session['user_id']=user.id
-                return user.to_dict(), 200
+                return user.to_dict(only=('id','username','bio','image_url')), 200
             else:
                 return {"message":"Password incorrect."}
         else:
@@ -70,7 +70,7 @@ class Logout(Resource):
 
 class TripsIndex(Resource):
     def get(self):
-        trips = [trip.to_dict() for trip in Trip.query.all()]
+        trips = [trip.to_dict(only=('id', 'destination','approximate_cost','description','trip_image_url')) for trip in Trip.query.all()]
         return trips, 200
     
     def post(self):
@@ -87,7 +87,7 @@ class TripsIndex(Resource):
             db.session.add(new_trip)
             try:
                 db.session.commit()
-                return new_trip.to_dict(), 201
+                return new_trip.to_dict(only=('id', 'destination','approximate_cost','description','trip_image_url')), 201
             except IntegrityError as e:
                 db.session.rollback()
                 return {"error":"Unprocessable entity."}, 422
@@ -97,7 +97,7 @@ class TripById(Resource):
         trip = Trip.query.filter(Trip.id==id).first()
         if trip is None:
             return {"message":"No trip found."}, 404
-        return trip.to_dict(), 200
+        return trip.to_dict(only=('id', 'destination','approximate_cost','description','trip_image_url')), 200
 
 api.add_resource(Homepage, '/', endpoint='/')
 api.add_resource(Signup, '/signup', endpoint='signup')
