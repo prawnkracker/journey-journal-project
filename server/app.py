@@ -99,6 +99,16 @@ class TripById(Resource):
             return {"message":"No trip found."}, 404
         return trip.to_dict(only=('id', 'destination','approximate_cost','description','trip_image_url')), 200
 
+class ReviewsByTripId(Resource):
+    def get(self, id):
+        trip = Trip.query.filter(Trip.id == id).first()
+        if trip is None:
+            return {"message":"No trip found."}, 404
+        reviews = [r.to_dict(only=('id','review')) for r in Review.query.filter(Review.trip_id == trip.id).all()]
+        if reviews is None:
+            return {"message":"This trip has no reviews yet."}, 404
+        return reviews, 200
+
 api.add_resource(Homepage, '/', endpoint='/')
 api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(CheckSession, '/check_session', endpoint='check_session')
@@ -106,6 +116,7 @@ api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(TripsIndex, '/trips_index', endpoint='trips_index')
 api.add_resource(TripById, '/trip/<int:id>', endpoint='trip/<int:id>')
+api.add_resource(ReviewsByTripId, '/reviews_by_trip_id/<int:id>', endpoint='/reviews_by_trip_id/<int:id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
