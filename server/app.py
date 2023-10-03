@@ -3,7 +3,7 @@
 # Standard library imports
 
 # Remote library imports
-from flask import request, session, make_response, jsonify
+from flask import request, session
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 
@@ -30,7 +30,7 @@ class Signup(Resource):
             db.session.add(user)
             db.session.commit()
             session['user_id']= user.id
-            return user.to_dict(only=('id','username','bio','image_url')), 201
+            return user.to_dict(), 201
         except IntegrityError as e:
             db.session.rollback()
             return {"message":"Unprocessable entity."}, 422
@@ -39,7 +39,7 @@ class CheckSession(Resource):
     def get(self):
         user = User.query.filter(User.id == session['user_id']).first()
         if user:
-            return user.to_dict(only=('id','username','bio','image_url')), 200
+            return user.to_dict(), 200
         else:
             return {"message":"User not logged in."}, 401
         
@@ -53,7 +53,7 @@ class Login(Resource):
         if user:
             if user.authenticate(password):
                 session['user_id']=user.id
-                return user.to_dict(only=('id','username','bio','image_url')), 200
+                return user.to_dict(), 200
             else:
                 return {"message":"Password incorrect."}
         else:
@@ -70,7 +70,7 @@ class Logout(Resource):
 
 class TripsIndex(Resource):
     def get(self):
-        trips = [trip.to_dict(only=('id', 'destination','approximate_cost','description','trip_image_url')) for trip in Trip.query.all()]
+        trips = [trip.to_dict() for trip in Trip.query.all()]
         return trips, 200
     
     def post(self):
@@ -87,7 +87,7 @@ class TripsIndex(Resource):
             db.session.add(new_trip)
             try:
                 db.session.commit()
-                return new_trip.to_dict(only=('id', 'destination','approximate_cost','description','trip_image_url')), 201
+                return new_trip.to_dict(), 201
             except IntegrityError as e:
                 db.session.rollback()
                 return {"error":"Unprocessable entity."}, 422
@@ -97,27 +97,27 @@ class TripById(Resource):
         trip = Trip.query.filter(Trip.id==id).first()
         if trip is None:
             return {"message":"No trip found."}, 404
-        return trip.to_dict(only=('id', 'destination','approximate_cost','description','trip_image_url')), 200
+        return trip.to_dict(), 200
 
-class ReviewsByTripId(Resource):
+class TripReviews(Resource):
     def get(self, id):
         trip = Trip.query.filter(Trip.id == id).first()
         if trip is None:
             return {"message":"No trip found."}, 404
-        reviews = [r.to_dict(only=('id','review', 'date_created', 'date_updated')) for r in Review.query.filter(Review.trip_id == trip.id).all()]
+        reviews = [r.to_dict() for r in Review.query.filter(Review.trip_id == trip.id).all()]
         if reviews is None:
             return {"message":"This trip has no reviews yet."}, 404
         return reviews, 200
     
-class ReviewsByUserId(Resource):
+class UserReviews(Resource):
     
-    def get(self):
+    def get(self, id):
         if session['user_id'] is None:
             return {"Error":"Unauthorized."}, 401
-        user = User.query.filter(User.id == session['user_id']).first()
+        user = User.query.filter(User.id == id).first()
         if user is None:
             return {"message":"No user found."},  404
-        reviews = [r.to_dict(only=('id','review', 'date_created', 'date_updated')) for r in Review.query.filter(Review.user_id == user.id).all()]
+        reviews = [r.to_dict() for r in Review.query.filter(Review.user_id == user.id).all()]
         if reviews is None:
             return {"message":"This user has no reviews yet."}, 404
         return reviews, 200
@@ -135,7 +135,7 @@ class ReviewsByUserId(Resource):
             db.session.add(new_review)
             try:
                 db.session.commit()
-                return new_review.to_dict(only=('id', 'review','date_created','date_updated','trip_id'))
+                return new_review.to_dict()
             except IntegrityError as e:
                 db.session.rollback()
                 return {"Error":"Unprocessable entity."}, 422
@@ -149,7 +149,7 @@ class ReviewsByUserId(Resource):
         try:
             db.session.add(selected_review)
             db.session.commit()
-            return selected_review.to_dict(only=('id','review','date_created','date_updated','trip_id'))
+            return selected_review.to_dict()
         except IntegrityError as e:
             db.session.rollback()
             return {"Error":"Unprocessable entity."}, 422
@@ -168,8 +168,8 @@ api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(TripsIndex, '/trips_index', endpoint='trips_index')
 api.add_resource(TripById, '/trip/<int:id>', endpoint='trip/<int:id>')
-api.add_resource(ReviewsByTripId, '/reviews_by_trip_id/<int:id>', endpoint='reviews_by_trip_id/<int:id>')
-api.add_resource(ReviewsByUserId, '/reviews_by_user_id/<int:id>', endpoint='reviews_by_user_id/<int:id>')
+api.add_resource(TripReviews, '/trip_reviews/<int:id>', endpoint='trip_reviews/<int:id>')
+api.add_resource(UserReviews, '/<int:user_id>/reviews', endpoint='<int:user_id>/reviews')
 
 
 if __name__ == '__main__':
