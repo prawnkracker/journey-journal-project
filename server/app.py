@@ -112,8 +112,6 @@ class TripReviews(Resource):
 class UserReviews(Resource):
     
     def get(self, id):
-        if session['user_id'] is None:
-            return {"Error":"Unauthorized."}, 401
         user = User.query.filter(User.id == id).first()
         if user is None:
             return {"message":"No user found."},  404
@@ -122,44 +120,27 @@ class UserReviews(Resource):
             return {"message":"This user has no reviews yet."}, 404
         return reviews, 200
     
-    def post(self):
+    def post(self, id):
         json=request.get_json()
         if session['user_id'] is None:
             return {"Error":"Unauthorized"}, 401
         else:
-            new_review= Review(
-                review=json.get('review'),
-                user_id = session['user_id'],
-                trip_id = json.get('trip_id')
-            )
-            db.session.add(new_review)
-            try:
-                db.session.commit()
-                return new_review.to_dict()
-            except IntegrityError as e:
-                db.session.rollback()
-                return {"Error":"Unprocessable entity."}, 422
+            if session['user_id'] != id:
+                return {"Error":"Unauthorized"}, 401
+            else:
+                new_review= Review(
+                    review=json.get('review'),
+                    user_id = session['user_id'],
+                    trip_id = json.get('trip_id')
+                )
+                db.session.add(new_review)
+                try:
+                    db.session.commit()
+                    return new_review.to_dict()
+                except IntegrityError as e:
+                    db.session.rollback()
+                    return {"Error":"Unprocessable entity."}, 422
             
-    def patch(self, id):
-        if session['user_id'] is None:
-            return {"Error":"Unauthorized"}, 401
-        selected_review = Review.query.filter(Review.id == id, Review.user_id == session['user_id']).first()
-        for attr in request.form:
-            setattr(selected_review, attr, request.form.get(attr))
-        try:
-            db.session.add(selected_review)
-            db.session.commit()
-            return selected_review.to_dict()
-        except IntegrityError as e:
-            db.session.rollback()
-            return {"Error":"Unprocessable entity."}, 422
-        
-    def delete(self, id):
-        if session['user_id'] is None:
-            return {"Error":"Unauthorized"}, 401
-        selected_review = Review.query.filter(Review.id == id, Review.user_id == session['user_id']).first()
-        db.session.delete(selected_review)
-        db.session.commit()
 
 api.add_resource(Homepage, '/', endpoint='/')
 api.add_resource(Signup, '/signup', endpoint='signup')
@@ -169,7 +150,7 @@ api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(TripsIndex, '/trips_index', endpoint='trips_index')
 api.add_resource(TripById, '/trip/<int:id>', endpoint='trip/<int:id>')
 api.add_resource(TripReviews, '/trip_reviews/<int:id>', endpoint='trip_reviews/<int:id>')
-api.add_resource(UserReviews, '/<int:user_id>/reviews', endpoint='<int:user_id>/reviews')
+api.add_resource(UserReviews, '/<int:id>/reviews', endpoint='<int:id>/reviews')
 
 
 if __name__ == '__main__':
