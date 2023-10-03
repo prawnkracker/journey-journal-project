@@ -5,17 +5,11 @@ from config import db, bcrypt
 
 # Models go here!
 
-# trip user association table
-trip_user = db.Table(
-    'trips_users',
-    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
-    db.Column('trip_id', db.Integer, db.ForeignKey('trips.id'))
-)
 
 # user model with password hashing
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
-    serialize_rules = ('-reviews.user', '-trips.users.reviews',)
+    serialize_rules = ('-reviews.user',)
     
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False, unique=True)
@@ -24,7 +18,6 @@ class User(db.Model, SerializerMixin):
     image_url = db.Column(db.String)
 
     reviews = db.relationship('Review', backref='user')
-    trips = db.relationship('Trip', secondary=trip_user, back_populates='users')
 
     @hybrid_property
     def password_hash(self):
@@ -47,7 +40,7 @@ class User(db.Model, SerializerMixin):
 class Review(db.Model, SerializerMixin):
     __tablename__ = 'reviews'
     __table_args__ = (db.CheckConstraint('LENGTH(review) >= 25'),)
-    serialize_rules = ('-user.reviews', '-trip.reviews',)
+    serialize_rules = ('-user.reviews', '-trip.reviews')
 
     id = db.Column(db.Integer, primary_key=True)
     review = db.Column(db.String, nullable=False)
@@ -63,7 +56,7 @@ class Review(db.Model, SerializerMixin):
 # trip model     
 class Trip(db.Model, SerializerMixin):
     __tablename__ = 'trips'
-    serialize_rules = ('-reviews.trip', '-users.trips.reviews',)
+    serialize_rules = ('-reviews.trip',)
 
     id = db.Column(db.Integer, primary_key=True)
     destination = db.Column(db.String(100), nullable=False, unique=True)
@@ -72,7 +65,6 @@ class Trip(db.Model, SerializerMixin):
     trip_image_url = db.Column(db.String)
 
     reviews = db.relationship('Review', backref='trip')
-    users = db.relationship('User', secondary=trip_user, back_populates='trips')
 
     def __repr__(self):
         return f'Trip: {self.destination} | Approximate Cost: {self.approximate_cost} | Description: {self.description}'
