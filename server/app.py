@@ -117,7 +117,7 @@ class ReviewsByUserId(Resource):
         user = User.query.filter(User.id == session['user_id']).first()
         if user is None:
             return {"message":"No user found."},  404
-        reviews = [r.to_dict(only=('id','review', 'date_created', 'date_updated')) for r in Review.query.filter(Review.user_id == user.id).first()]
+        reviews = [r.to_dict(only=('id','review', 'date_created', 'date_updated')) for r in Review.query.filter(Review.user_id == user.id).all()]
         if reviews is None:
             return {"message":"This user has no reviews yet."}, 404
         return reviews, 200
@@ -139,6 +139,20 @@ class ReviewsByUserId(Resource):
             except IntegrityError as e:
                 db.session.rollback()
                 return {"Error":"Unprocessable entity."}, 422
+            
+    def patch(self, id):
+        if session['user_id'] is None:
+            return {"Error":"Unauthorized"}, 401
+        selected_review = Review.query.filter(Review.id == id, Review.user_id == session['user_id']).first()
+        for attr in request.form:
+            setattr(selected_review, attr, request.form.get(attr))
+        try:
+            db.session.add(selected_review)
+            db.session.commit()
+            return selected_review.to_dict(only=('id','review','date_created','date_updated','trip_id'))
+        except IntegrityError as e:
+            db.session.rollback()
+            return {"Error":"Unprocessable entity."}, 422
 
 api.add_resource(Homepage, '/', endpoint='/')
 api.add_resource(Signup, '/signup', endpoint='signup')
