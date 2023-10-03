@@ -153,6 +153,13 @@ class ReviewsByUserId(Resource):
         except IntegrityError as e:
             db.session.rollback()
             return {"Error":"Unprocessable entity."}, 422
+        
+    def delete(self, id):
+        if session['user_id'] is None:
+            return {"Error":"Unauthorized"}, 401
+        selected_review = Review.query.filter(Review.id == id, Review.user_id == session['user_id']).first()
+        db.session.delete(selected_review)
+        db.session.commit()
 
 api.add_resource(Homepage, '/', endpoint='/')
 api.add_resource(Signup, '/signup', endpoint='signup')
