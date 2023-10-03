@@ -140,7 +140,13 @@ class UserReviews(Resource):
                 except IntegrityError as e:
                     db.session.rollback()
                     return {"Error":"Unprocessable entity."}, 422
-            
+
+class UserReview(Resource):
+    def get(self, user_id, review_id):
+        review = Review.query.filter(Review.user_id == user_id, Review.id == review_id).first()
+        if review is None:
+            return {"message":"No review found."}, 404
+        return review.to_dict(), 200
 
 api.add_resource(Homepage, '/', endpoint='/')
 api.add_resource(Signup, '/signup', endpoint='signup')
@@ -150,7 +156,8 @@ api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(TripsIndex, '/trips_index', endpoint='trips_index')
 api.add_resource(TripById, '/trip/<int:id>', endpoint='trip/<int:id>')
 api.add_resource(TripReviews, '/trip_reviews/<int:id>', endpoint='trip_reviews/<int:id>')
-api.add_resource(UserReviews, '/<int:id>/reviews', endpoint='<int:id>/reviews')
+api.add_resource(UserReviews, '/<int:user_id>/reviews', endpoint='<int:user_id>/reviews')
+api.add_resource(UserReview, '/<int:user_id>/review/<int:id>', endpoint='<int:id>/review/<int:review_id>')
 
 
 if __name__ == '__main__':
