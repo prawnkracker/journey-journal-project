@@ -4,14 +4,26 @@ import Home from './Home'
 import TripList from './TripList'
 
 function App() {
-  const [trips, setTrips] = useState([])
-  
+  const [trips, setTrips] = useState([]);
+  const [user, setUser] = useState(null);
+  // get trips
   useEffect(() => {
-    fetch('/trips_index')
-    .then((r) => r.json())
-    .then((data) => setTrips(data))
-  }, []);
-  console.log(trips)
+     fetch('/trips_index')
+     .then((r) => r.json())
+     .then((data) => setTrips(data))
+   }, []);
+   console.log(trips)
+  
+   //auto login
+  useEffect(() => {
+    fetch('/check_session').then((r) => {
+      if (r.ok) {
+        r.json().then((user) => setUser(user));
+      }
+    });
+  }, []); 
+
+  
   
   return (
     <div className="app">
