@@ -150,6 +150,8 @@ class UserReview(Resource):
     
     def patch(self, user_id, review_id):
         review = Review.query.filter(Review.query.filter(Review.user_id == user_id, Review.id == review_id)).first()
+        if session['user_id'] != user_id:
+            return {"Error":"Unauthorized."}, 422
         for attr in request.form:
             setattr(review, attr, request.form.get(attr))
         try:
@@ -159,6 +161,15 @@ class UserReview(Resource):
         except IntegrityError as e:
             db.session.rollback()
             return {"Error":"Unprocessable entity."}, 422
+    
+    def delete(self, user_id, review_id):
+        review = Review.query.filter(Review.query.filter(Review.user_id == user_id, Review.id == review_id)).first()
+        if session['user_id'] != user_id:
+            return {"Error":"Unauthorized."}, 422
+        db.session.delete(review)
+        db.session.commit()
+        return {"message":"Review deleted."}, 204
+        
 
 api.add_resource(Homepage, '/', endpoint='/')
 api.add_resource(Signup, '/signup', endpoint='signup')
