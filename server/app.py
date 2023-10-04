@@ -111,8 +111,8 @@ class TripReviews(Resource):
     
 class UserReviews(Resource):
     
-    def get(self, id):
-        user = User.query.filter(User.id == id).first()
+    def get(self, user_id):
+        user = User.query.filter(User.id == user_id).first()
         if user is None:
             return {"message":"No user found."},  404
         reviews = [r.to_dict() for r in Review.query.filter(Review.user_id == user.id).all()]
@@ -120,12 +120,12 @@ class UserReviews(Resource):
             return {"message":"This user has no reviews yet."}, 404
         return reviews, 200
     
-    def post(self, id):
+    def post(self, user_id):
         json=request.get_json()
         if session['user_id'] is None:
             return {"Error":"Unauthorized"}, 401
         else:
-            if session['user_id'] != id:
+            if session['user_id'] != user_id:
                 return {"Error":"Unauthorized"}, 401
             else:
                 new_review= Review(
@@ -147,6 +147,18 @@ class UserReview(Resource):
         if review is None:
             return {"message":"No review found."}, 404
         return review.to_dict(), 200
+    
+    def patch(self, user_id, review_id):
+        review = Review.query.filter(Review.query.filter(Review.user_id == user_id, Review.id == review_id)).first()
+        for attr in request.form:
+            setattr(review, attr, request.form.get(attr))
+        try:
+            db.session.add(review)
+            db.session.commit()
+            return review.to_dict(), 201
+        except IntegrityError as e:
+            db.session.rollback()
+            return {"Error":"Unprocessable entity."}, 422
 
 api.add_resource(Homepage, '/', endpoint='/')
 api.add_resource(Signup, '/signup', endpoint='signup')
@@ -157,7 +169,7 @@ api.add_resource(TripsIndex, '/trips_index', endpoint='trips_index')
 api.add_resource(TripById, '/trip/<int:id>', endpoint='trip/<int:id>')
 api.add_resource(TripReviews, '/trip_reviews/<int:id>', endpoint='trip_reviews/<int:id>')
 api.add_resource(UserReviews, '/<int:user_id>/reviews', endpoint='<int:user_id>/reviews')
-api.add_resource(UserReview, '/<int:user_id>/review/<int:id>', endpoint='<int:id>/review/<int:review_id>')
+api.add_resource(UserReview, '/<int:user_id>/review/<int:review_id>', endpoint='<int:id>/review/<int:review_id>')
 
 
 if __name__ == '__main__':
