@@ -4,6 +4,7 @@ import Home from './Home'
 import TripList from './TripList'
 import NavBar from "./NavBar";
 import SignupLogin from "./SignupLogin";
+import TripReviews from "./TripReviews";
 
 function App() {
   const [trips, setTrips] = useState([]);
@@ -33,8 +34,14 @@ function App() {
         <Route exact path='/'>
           <Home />
         </Route>
+        <Route path='/login'>
+          <SignupLogin onLogin={setUser}/>
+        </Route>
         <Route path='/trips'>
           <TripList trips={trips}/>
+        </Route>
+        <Route path='/tripreviews/:id'>
+          <TripReviews />
         </Route>
       </Switch>
     </div>
