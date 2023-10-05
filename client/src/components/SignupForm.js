@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 
-function SignupForm(){
+function SignupForm({onLogin}){
     const [form, setForm] = useState({
         username: '',
         password: '',
@@ -18,6 +18,7 @@ function SignupForm(){
             ...form,
             [name]: value
         })
+        console.log(form)
     }
 
     function handleSubmit(e){
@@ -43,6 +44,12 @@ function SignupForm(){
                 r.json().then((error) => setErrors(error))
             }
         })
+        setForm({
+            username: '',
+            password: '',
+            bio:'',
+            image_url:''
+        })
     }
 
     return (
@@ -51,8 +58,9 @@ function SignupForm(){
             <input
                     type='text'
                     placeholder="Username..."
+                    name='username'
                     id='username'
-                    autocomplete='off'
+                    autoComplete='off'
                     value={form.username}
                     onChange={handleChange}
                 />
@@ -60,8 +68,9 @@ function SignupForm(){
                 <input
                     type='password'
                     placeholder="Password..."
+                    name='password'
                     id='password'
-                    autocomplete='current-password'
+                    autoComplete='current-password'
                     value={form.password}
                     onChange={handleChange}
                 />
@@ -69,8 +78,9 @@ function SignupForm(){
                 <input
                     type='text'
                     placeholder="Bio..."
+                    name='bio'
                     id='bio'
-                    autocomplete='off'
+                    autoComplete='off'
                     value={form.bio}
                     onChange={handleChange}
                 />
@@ -78,17 +88,20 @@ function SignupForm(){
                 <input
                     type='text'
                     placeholder="Image Url..."
+                    name='image_url'
                     id='image-url'
-                    autocomplete='off'
+                    autoComplete='off'
                     value={form.image_url}
                     onChange={handleChange}
                 />
             <button type="submit">Sign Up</button>
-            <FormField>
+            <div>
                 {errors.map((err) => {
-                    <Error key={err}>{err}</Error>
+                    <alert key={err}>{err}</alert>
                 })}
-            </FormField>
+            </div>
         </form>
     )
 }
+
+export default SignupForm;
