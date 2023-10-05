@@ -18,7 +18,6 @@ function SignupForm({onLogin}){
             ...form,
             [name]: value
         })
-        console.log(form)
     }
 
     function handleSubmit(e){
