@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-function LoginForm(){
+function LoginForm({onLogin}){
     const [form, setForm] = useState({
         username: '',
         password: ''
@@ -8,11 +8,11 @@ function LoginForm(){
     const [errors, setErrors] = useState([])
 
     function handleChange(e){
-        const { name, value } = e.target
+        // const { name, value } = e.target
 
         setForm({
             ...form,
-            [name]: value
+            [e.target.name]: e.target.value
         })
     }
 
@@ -37,6 +37,10 @@ function LoginForm(){
                 r.json().then((error) => setErrors(error))
             }
         })
+        setForm({
+            username:'',
+            password:''
+        })
 
     }
 
@@ -46,8 +50,9 @@ function LoginForm(){
                 <input
                     type='text'
                     placeholder="Username..."
+                    name='username'
                     id='username'
-                    autocomplete='off'
+                    autoComplete='off'
                     value={form.username}
                     onChange={handleChange}
                 />
@@ -55,17 +60,18 @@ function LoginForm(){
                 <input
                     type='password'
                     placeholder="Password..."
+                    name='password'
                     id='password'
-                    autocomplete='current-password'
+                    autoComplete='current-password'
                     value={form.password}
                     onChange={handleChange}
                 />
             <button type='submit'>Login</button>
-            <FormField>
+            <div>
                 {errors.map((err) => (
-                    <Error key={err}>{err}</Error>
+                    <alert key={err}>{err}</alert>
                 ))}
-            </FormField>
+            </div>
         </form>
     );
 }
