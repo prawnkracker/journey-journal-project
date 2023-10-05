@@ -14,7 +14,6 @@ function App() {
      .then((r) => r.json())
      .then((data) => setTrips(data))
    }, []);
-   console.log(trips)
   
    //auto login
   useEffect(() => {
