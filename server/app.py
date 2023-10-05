@@ -37,6 +37,8 @@ class Signup(Resource):
 
 class CheckSession(Resource):
     def get(self):
+        if 'user_id' not in session:
+            return {"message":"User not logged in."}, 401
         user = User.query.filter(User.id == session['user_id']).first()
         if user:
             return user.to_dict(), 200
