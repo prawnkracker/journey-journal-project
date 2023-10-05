@@ -167,10 +167,44 @@ class UserReview(Resource):
     def delete(self, user_id, review_id):
         review = Review.query.filter(Review.query.filter(Review.user_id == user_id, Review.id == review_id)).first()
         if session['user_id'] != user_id:
-            return {"Error":"Unauthorized."}, 422
+            return {"Error":"Unauthorized."}, 401
         db.session.delete(review)
         db.session.commit()
         return {"message":"Review deleted."}, 204
+    
+class User(Resource):
+    def get(self, id):
+        user = User.query.filter(User.id == id).first()
+        if user is None:
+            return {"message":"No user found."}, 404
+        return user.to_dict(), 200
+    
+    def patch(self, id):
+        user = User.query.filter(User.id == id).first()
+        if user is None:
+            return {"message":"No user found."}, 404
+        if user.id != session['user_id']:
+            return {"Error":"Unauthorized."}, 401
+        for attr in request.form:
+            setattr(user, attr, request.form.get(attr))
+        try:
+            db.session.add(user)
+            db.session.commit()
+            return user.to_dict()
+        except IntegrityError as e:
+            db.session.rollback()
+            return {"Error":"Unprocessable entity."}, 422
+        
+    def delete(self, id):
+        user = User.query.filter(User.id == id).first()
+        if user is None:
+            return {"message":"No user found."}, 404
+        if user.id != session['user_id']:
+            return {"Error":"Unauthorized."}, 401
+        else:
+            db.session.delete(user)
+            db.session.commit()
+            return {"message":"User successfully deleted."}, 204
         
 
 api.add_resource(Homepage, '/', endpoint='/')
@@ -183,6 +217,7 @@ api.add_resource(TripById, '/trip/<int:id>', endpoint='trip/<int:id>')
 api.add_resource(TripReviews, '/trip_reviews/<int:id>', endpoint='trip_reviews/<int:id>')
 api.add_resource(UserReviews, '/<int:user_id>/reviews', endpoint='<int:user_id>/reviews')
 api.add_resource(UserReview, '/<int:user_id>/review/<int:review_id>', endpoint='<int:id>/review/<int:review_id>')
+api.add_resource(User, '/user/<int:id>', endpoint='user/<int:id>')
 
 
 if __name__ == '__main__':
