@@ -3,6 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import Home from './Home'
 import TripList from './TripList'
 import NavBar from "./NavBar";
+import SignupLogin from "./SignupLogin";
 
 function App() {
   const [trips, setTrips] = useState([]);
@@ -24,7 +25,7 @@ function App() {
     });
   }, []); 
 
-
+  if (!user) return <SignupLogin onLogin={setUser}/>
   
   return (
     <div className="app">
