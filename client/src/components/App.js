@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import Home from './Home'
 import TripList from './TripList'
+import NavBar from "./NavBar";
 
 function App() {
   const [trips, setTrips] = useState([]);
@@ -23,15 +24,16 @@ function App() {
     });
   }, []); 
 
-  
+
   
   return (
     <div className="app">
+      <NavBar />
       <Switch>
         <Route exact path='/'>
           <Home />
         </Route>
-        <Route path='/triplist'>
+        <Route path='/trips'>
           <TripList trips={trips}/>
         </Route>
       </Switch>
