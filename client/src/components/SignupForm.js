@@ -96,7 +96,7 @@ function SignupForm({onLogin}){
             <button type="submit">Sign Up</button>
             <div>
                 {errors.map((err) => {
-                    <alert key={err}>{err}</alert>
+                    return alert(err)
                 })}
             </div>
         </form>
