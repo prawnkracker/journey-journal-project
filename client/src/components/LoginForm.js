@@ -48,7 +48,7 @@ function LoginForm(){
                     placeholder="Username..."
                     id='username'
                     autocomplete='off'
-                    value={username}
+                    value={form.username}
                     onChange={handleChange}
                 />
             <h4>Password:</h4>
@@ -57,7 +57,7 @@ function LoginForm(){
                     placeholder="Password..."
                     id='password'
                     autocomplete='current-password'
-                    value={password}
+                    value={form.password}
                     onChange={handleChange}
                 />
             <button type='submit'>Login</button>
