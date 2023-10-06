@@ -17,6 +17,8 @@ function TripReviews(){
         .then((tripData) => setTrip(tripData))
     }, [id]);
 
+    if (reviews.length > 0){
+    
     return (
         <div className="trip-reviews-card">
             <h1>Destination: {trip.destination}</h1>
@@ -31,7 +33,18 @@ function TripReviews(){
                 />}
             )}
         </div>
-    )
+    )}
+    else {
+        return(
+            <div className="trip-reviews-card">
+            <h1>Destination: {trip.destination}</h1>
+            <img src={trip.trip_image_url} alt='Destination'/>
+            <h2>Approximate Cost: ${trip.approximate_cost}</h2>
+            <p><b>Description:</b> {trip.description}</p>
+            <h2>No reviews yet!</h2>
+            </div>
+        )
+    }
 }
 
 export default TripReviews;
