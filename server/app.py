@@ -26,6 +26,9 @@ class Signup(Resource):
             image_url=json.get('image_url')
         )
         user.password_hash=json.get('password')
+        existing_user = User.query.filter(User.username == user.username).first()
+        if existing_user is not None:
+            return {"message":"That username is already in use."}, 400
         try:
             db.session.add(user)
             db.session.commit()
