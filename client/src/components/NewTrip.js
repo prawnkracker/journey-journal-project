@@ -96,6 +96,7 @@ function NewTrip(){
                 value={form.trip_image_url}
                 onChange={handleChange}
             />
+            <button type="submit">Add trip</button>
         </form>
     )
 }
