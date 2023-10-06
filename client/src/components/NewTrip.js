@@ -68,7 +68,7 @@ function NewTrip(){
             />
             <h4>Approximate Cost:</h4>
             <input
-                type="text"
+                type="number"
                 placeholder="Approximate Cost..."
                 name="approximate_cost"
                 id="approximate_cost"
