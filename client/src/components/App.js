@@ -32,7 +32,7 @@ function App() {
   
   return (
     <div className="app">
-      <NavBar />
+      <NavBar setUser={setUser}/>
       <Switch>
         <Route exact path='/'>
           <Home />
