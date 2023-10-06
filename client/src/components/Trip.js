@@ -7,7 +7,7 @@ function Trip({trip}){
     
     return (
         <div className="trip-card">
-            <h1>{destination}</h1>
+            <h1>{trip.id}. {destination}</h1>
             <img src={trip_image_url} alt='Destination'/>
             <h2>${approximate_cost}</h2>
             <p><b>Description:</b> {description}</p>
