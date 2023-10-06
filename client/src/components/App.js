@@ -8,6 +8,7 @@ import TripReviews from "./TripReviews";
 import UserReviews from "./UserReviews";
 import NewTrip from "./NewTrip";
 import NewReview from "./NewReview"
+import UserPage from "./UserPage";
 
 function App() {
   const [trips, setTrips] = useState([]);
@@ -32,7 +33,7 @@ function App() {
   
   return (
     <div className="app">
-      <NavBar setUser={setUser}/>
+      <NavBar user={user} setUser={setUser}/>
       <Switch>
         <Route exact path='/'>
           <Home />
@@ -44,16 +45,19 @@ function App() {
           <TripList trips={trips}/>
         </Route>
         <Route path='/tripreviews/:id'>
-          <TripReviews />
+          <TripReviews currentUser={user}/>
         </Route>
         <Route path='/userreviews/:id'>
-          <UserReviews />
+          <UserReviews currentUser={user}/>
         </Route>
         <Route path='/newtrip'>
           <NewTrip />
         </Route>
         <Route path='/newreview'>
           <NewReview user={user} trips={trips}/>
+        </Route>
+        <Route path={`/${user.username}`}>
+          <UserPage currentUser={user}/>
         </Route>
       </Switch>
     </div>
