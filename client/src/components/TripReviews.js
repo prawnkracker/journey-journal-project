@@ -16,8 +16,7 @@ function TripReviews(){
         .then((r) => r.json())
         .then((tripData) => setTrip(tripData))
     }, [id]);
-    console.log(reviews)
-    
+
     return (
         <div className="trip-reviews-card">
             <h1>Destination: {trip.destination}</h1>
