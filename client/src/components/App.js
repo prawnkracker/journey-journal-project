@@ -7,6 +7,7 @@ import SignupLogin from "./SignupLogin";
 import TripReviews from "./TripReviews";
 import UserReviews from "./UserReviews";
 import NewTrip from "./NewTrip";
+import NewReview from "./NewReview"
 
 function App() {
   const [trips, setTrips] = useState([]);
@@ -50,6 +51,9 @@ function App() {
         </Route>
         <Route path='/newtrip'>
           <NewTrip />
+        </Route>
+        <Route path='/newreview'>
+          <NewReview user={user}/>
         </Route>
       </Switch>
     </div>
