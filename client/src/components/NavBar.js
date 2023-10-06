@@ -25,6 +25,13 @@ function NavBar(){
             >
             New Trip
             </NavLink>
+            <NavLink
+            to='/newreview'
+            exact
+            className='navlink'
+            >
+            New Review
+            </NavLink>
         </nav>
     )
 }
