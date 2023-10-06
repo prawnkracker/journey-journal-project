@@ -57,7 +57,7 @@ class Login(Resource):
                 session['user_id']=user.id
                 return user.to_dict(), 200
             else:
-                return {"message":"Password incorrect."}
+                return {"message":"Password incorrect."}, 401
         else:
             return {"message":"No user found."}, 401
         
@@ -172,7 +172,7 @@ class UserReview(Resource):
         db.session.commit()
         return {"message":"Review deleted."}, 204
     
-class User(Resource):
+class UserId(Resource):
     def get(self, id):
         user = User.query.filter(User.id == id).first()
         if user is None:
@@ -217,7 +217,7 @@ api.add_resource(TripById, '/trip/<int:id>', endpoint='trip/<int:id>')
 api.add_resource(TripReviews, '/trip_reviews/<int:id>', endpoint='trip_reviews/<int:id>')
 api.add_resource(UserReviews, '/<int:user_id>/reviews', endpoint='<int:user_id>/reviews')
 api.add_resource(UserReview, '/<int:user_id>/review/<int:review_id>', endpoint='<int:id>/review/<int:review_id>')
-api.add_resource(User, '/user/<int:id>', endpoint='user/<int:id>')
+api.add_resource(UserId, '/user/<int:id>', endpoint='user/<int:id>')
 
 
 if __name__ == '__main__':
