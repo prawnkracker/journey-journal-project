@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+// import TripList from "./TripList";
 
-function NewReview({user}){
+function NewReview({user, trips}){
     const [form, setForm] = useState({
         review:'',
         trip_id:''
@@ -36,6 +37,7 @@ function NewReview({user}){
                 r.json().then(() => history.push(`/userreviews/${user.id}`))
             }
         })
+        console.log(reviewInfo)
         setForm({
             review:'',
             trip_id:''
@@ -47,6 +49,7 @@ function NewReview({user}){
             <h4>Review:</h4>
             <input
                 type="text"
+                size='50'
                 placeholder="Review..."
                 name="review"
                 id="review"
@@ -55,15 +58,11 @@ function NewReview({user}){
                 onChange={handleChange}
             />
             <h4>Trip ID:</h4>
-            <input
-                type="text"
-                placeholder="Trip ID..."
-                name="trip_id"
-                id="trip_id"
-                autoComplete="off"
-                value={form.trip_id}
-                onChange={handleChange}
-            />
+            <select id='trip_id' name='trip_id' onChange={handleChange} value={form.trip_id}>
+                {trips.map((trip) => {
+                    return <option value={trip.id} key={trip.id} >{trip.id}</option>
+                })}
+            </select>
             <button type="submit">Add review</button>
         </form>
     )
