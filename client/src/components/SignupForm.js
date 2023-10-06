@@ -9,7 +9,6 @@ function SignupForm({onLogin}){
         image_url:''
     })
     
-    const [errors, setErrors] = useState([])
 
     function handleChange(e){
         const { name, value } = e.target
@@ -40,7 +39,7 @@ function SignupForm({onLogin}){
                 r.json().then((user) => onLogin(user))
             }
             else {
-                r.json().then((error) => setErrors(error))
+                r.json().then((error) => alert(error.message))
             }
         })
         setForm({
@@ -54,7 +53,7 @@ function SignupForm({onLogin}){
     return (
         <form onSubmit={handleSubmit}>
             <h4>Username:</h4>
-            <input
+                <input
                     type='text'
                     placeholder="Username..."
                     name='username'
@@ -94,11 +93,6 @@ function SignupForm({onLogin}){
                     onChange={handleChange}
                 />
             <button type="submit">Sign Up</button>
-            <div>
-                {errors.map((err) => {
-                    return alert(err)
-                })}
-            </div>
         </form>
     )
 }
