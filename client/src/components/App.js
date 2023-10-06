@@ -53,7 +53,7 @@ function App() {
           <NewTrip />
         </Route>
         <Route path='/newreview'>
-          <NewReview user={user}/>
+          <NewReview user={user} trips={trips}/>
         </Route>
       </Switch>
     </div>
