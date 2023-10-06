@@ -6,6 +6,7 @@ import NavBar from "./NavBar";
 import SignupLogin from "./SignupLogin";
 import TripReviews from "./TripReviews";
 import UserReviews from "./UserReviews";
+import NewTrip from "./NewTrip";
 
 function App() {
   const [trips, setTrips] = useState([]);
@@ -46,6 +47,9 @@ function App() {
         </Route>
         <Route path='/userreviews/:id'>
           <UserReviews />
+        </Route>
+        <Route path='/newtrip'>
+          <NewTrip />
         </Route>
       </Switch>
     </div>
