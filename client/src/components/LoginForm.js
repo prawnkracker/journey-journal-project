@@ -5,7 +5,6 @@ function LoginForm({onLogin}){
         username: '',
         password: ''
     })
-    const [errors, setErrors] = useState([])
 
     function handleChange(e){
         setForm({
@@ -32,7 +31,7 @@ function LoginForm({onLogin}){
                 r.json().then((user) => onLogin(user))
             }
             else {
-                r.json().then((error) => setErrors(error))
+                r.json().then((error) => alert(error.message))
             }
         })
         setForm({
@@ -65,11 +64,6 @@ function LoginForm({onLogin}){
                     onChange={handleChange}
                 />
             <button type='submit'>Login</button>
-            <div>
-                {errors.map((err) => (
-                    <alert key={err}>{err}</alert>
-                ))}
-            </div>
         </form>
     );
 }
