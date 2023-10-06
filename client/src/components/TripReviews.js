@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { useParams } from "react-router-dom";
+import Review from "./Review";
 
 function TripReviews(){
     const [reviews, setReviews] = useState([])
@@ -24,6 +25,12 @@ function TripReviews(){
             <h2>Approximate Cost: ${trip.approximate_cost}</h2>
             <p><b>Description:</b> {trip.description}</p>
             <h2>Reviews:</h2>
+            {reviews.map((review) => {
+                return <Review 
+                key={review.id}
+                reviewData={review}
+                />}
+            )}
         </div>
     )
 }
