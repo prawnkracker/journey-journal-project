@@ -5,6 +5,7 @@ import TripList from './TripList'
 import NavBar from "./NavBar";
 import SignupLogin from "./SignupLogin";
 import TripReviews from "./TripReviews";
+import UserReviews from "./UserReviews";
 
 function App() {
   const [trips, setTrips] = useState([]);
@@ -42,6 +43,9 @@ function App() {
         </Route>
         <Route path='/tripreviews/:id'>
           <TripReviews />
+        </Route>
+        <Route path='/userreviews/:id'>
+          <UserReviews />
         </Route>
       </Switch>
     </div>
