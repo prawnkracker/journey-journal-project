@@ -16,25 +16,16 @@ function Review({reviewData}){
         .then((data) => setTrip(data))
     }, [user_id, trip_id])
 
-    return(
-        <>
-        {review ? 
-                (<div className="review_card">
-                    <h3>User: 
-                        <Link to={`/userreviews/${user_id}`}>
-                            {user.username}
-                        </Link>
-                    </h3>
-                    <p>{review}</p>
-                    <p><b>Date Created:</b> {date_created.slice(0,10)}</p>
-                    <p><em>Trip:</em> {trip.destination}</p>
-                </div>) 
-            :  
-            (<div className="review_card">
-                <h2>No reviews yet!</h2>
-            </div>)}
-        </>
-    )
-}
+        return (
+            <div className="review_card">
+                <h3>User:</h3> 
+                <Link to={`/userreviews/${user_id}`}>
+                    {user.username}
+                </Link>
+                <p>{review}</p>
+                <p><b>Date Created:</b> {date_created.slice(0,10)}</p>
+                <p><em>Trip:</em> {trip.destination}</p>
+            </div>)
+    }
 
 export default Review;
