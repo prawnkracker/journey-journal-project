@@ -18,6 +18,13 @@ function NavBar(){
             >
             Trips
             </NavLink>
+            <NavLink
+            to='/newtrip'
+            exact
+            className='navlink'
+            >
+            New Trip
+            </NavLink>
         </nav>
     )
 }
