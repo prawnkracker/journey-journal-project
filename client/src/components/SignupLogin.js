@@ -6,7 +6,7 @@ function SignupLogin({onLogin}){
     const [login, setLogin] = useState(true)
 
     return (
-        <div>
+        <>
             {login ? 
             (<div>
             <LoginForm onLogin={onLogin}/>
@@ -20,7 +20,7 @@ function SignupLogin({onLogin}){
             <button onClick={() => setLogin(true)}>Sign in</button>
             </div>
             )}
-        </div>
+        </>
     )
 }
 
