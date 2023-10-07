@@ -1,7 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 function NavBar({user, setUser}){
+    const history = useHistory()
     function handleLogout(){
         fetch('/logout', { method: "DELETE"})
         .then((r) => {
@@ -9,6 +11,7 @@ function NavBar({user, setUser}){
                 setUser(null)
             }
         })
+        .then(() => history.push('/'))
     }
     
     return (
