@@ -8,7 +8,7 @@ function Review({reviewData, currentUser, trips}){
     const [showForm, setShowForm] = useState('none')
     const [review, setReview] = useState(reviewData)
     const [form, setForm] = useState({
-        review:'',
+        review:review.review,
         trip_id:review.trip_id
     })
 
@@ -46,7 +46,7 @@ function Review({reviewData, currentUser, trips}){
         .then((data) => setReview(data))
 
         setForm({
-            review:'',
+            review:review.review,
             trip_id:review.trip_id
         })
         setShowForm('none')
@@ -60,7 +60,7 @@ function Review({reviewData, currentUser, trips}){
             </Link>
             <p>{review.review}</p>
             <p><b>Date Created:</b> {review.date_created.slice(0,10)}</p>
-            <p><em>Trip:</em> {trip.id}. {trip.destination}</p>
+            <p><em><u>Trip:</u></em> {trip.id}. {trip.destination}</p>
             {currentUser.id === review.user_id && (
                 <button onClick={() => setShowForm('block')}>Edit Review</button>
             )}
@@ -68,7 +68,6 @@ function Review({reviewData, currentUser, trips}){
                 <h4>Review:</h4>
                 <input 
                     type="text"
-                    placeholder={review.review}
                     name="review"
                     id="review"
                     autoComplete="off"
@@ -86,7 +85,7 @@ function Review({reviewData, currentUser, trips}){
                 })}
             </select>
                 <button onClick={()=> setShowForm('none')}>Close</button>
-                <button type="submit">Submit</button>
+                <button type="submit">Update Review</button>
             </form>
         </div>)
 }
