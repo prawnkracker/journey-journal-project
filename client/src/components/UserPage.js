@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import Review from "./Review";
 import { useHistory } from "react-router-dom";
 
-function UserPage({currentUser, trips}){
+function UserPage({currentUser, trips, setAppUser}){
     const [reviews, setReviews] = useState([])
     const [showUserEdit, setShowUserEdit] = useState('none')
     const [user, setUser] = useState(currentUser)
+    const [bio, setBio] = useState(currentUser.bio)
+    const [imageUrl, setImageUrl] = useState(currentUser.image_url)
     const [form, setForm] = useState({
         bio:user.bio,
         image_url:user.image_url,
@@ -32,7 +34,7 @@ function UserPage({currentUser, trips}){
         e.preventDefault()
         const userInfo={
             bio:form.bio,
-            image_url:form.bio
+            image_url:form.image_url
         }
         fetch(`/user/${user.id}`, {
             method:"PATCH",
@@ -40,7 +42,11 @@ function UserPage({currentUser, trips}){
             body: JSON.stringify(userInfo)
         })
         .then((r) => r.json())
-        .then((data) => setUser(data))
+        .then((data) => {
+            setUser(data) 
+            setBio(data.bio)
+            setImageUrl(data.image_url)
+        })
 
         setForm({
             bio:user.bio,
@@ -58,7 +64,7 @@ function UserPage({currentUser, trips}){
         fetch('/logout', {method: "DELETE"})
         .then((r)=> {
             if (r.ok){
-                setUser(null)
+                setAppUser(null)
             }
         })
         .then(() => history.push('/'))
@@ -66,9 +72,9 @@ function UserPage({currentUser, trips}){
 
     return (
         <div className="user-card">
-        <img src={`${user.image_url}`} alt="User avatar"/>
+        <img src={`${imageUrl}`} alt="User avatar"/>
         <h1>{user.username}</h1>
-        <p><b>Bio:</b> {user.bio}</p>
+        <p><b>Bio:</b> {bio}</p>
         <button onClick={() => setShowUserEdit('block')}>Edit User Info</button>
         <button onClick={handleDeleteClick}>Delete User</button>
         <form onSubmit={handleSubmit} style={{display:showUserEdit}}>
@@ -107,4 +113,4 @@ function UserPage({currentUser, trips}){
     )
 }
 
-export default UserPage
+export default UserPage;
