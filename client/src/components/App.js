@@ -57,7 +57,7 @@ function App() {
           <NewReview user={user} trips={trips}/>
         </Route>
         <Route path={`/${user.username}`}>
-          <UserPage currentUser={user} trips={trips}/>
+          <UserPage currentUser={user} trips={trips} setAppUser={setUser}/>
         </Route>
       </Switch>
     </div>
