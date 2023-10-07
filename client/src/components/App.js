@@ -45,10 +45,10 @@ function App() {
           <TripList trips={trips}/>
         </Route>
         <Route path='/tripreviews/:id'>
-          <TripReviews currentUser={user}/>
+          <TripReviews currentUser={user} trips={trips}/>
         </Route>
         <Route path='/userreviews/:id'>
-          <UserReviews currentUser={user}/>
+          <UserReviews currentUser={user} trips={trips}/>
         </Route>
         <Route path='/newtrip'>
           <NewTrip />
@@ -57,7 +57,7 @@ function App() {
           <NewReview user={user} trips={trips}/>
         </Route>
         <Route path={`/${user.username}`}>
-          <UserPage currentUser={user}/>
+          <UserPage currentUser={user} trips={trips}/>
         </Route>
       </Switch>
     </div>
