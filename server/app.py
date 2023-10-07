@@ -154,11 +154,12 @@ class UserReview(Resource):
         return review.to_dict(), 200
     
     def patch(self, user_id, review_id):
-        review = Review.query.filter(Review.query.filter(Review.user_id == user_id, Review.id == review_id)).first()
+        json=request.get_json()
+        review = Review.query.filter(Review.user_id == user_id, Review.id == review_id).first()
         if session['user_id'] != user_id:
             return {"Error":"Unauthorized."}, 422
-        for attr in request.form:
-            setattr(review, attr, request.form.get(attr))
+        for attr in json:
+            setattr(review, attr, json.get(attr))
         try:
             db.session.add(review)
             db.session.commit()
@@ -168,7 +169,7 @@ class UserReview(Resource):
             return {"Error":"Unprocessable entity."}, 422
     
     def delete(self, user_id, review_id):
-        review = Review.query.filter(Review.query.filter(Review.user_id == user_id, Review.id == review_id)).first()
+        review = Review.query.filter(Review.user_id == user_id, Review.id == review_id).first()
         if session['user_id'] != user_id:
             return {"Error":"Unauthorized."}, 401
         db.session.delete(review)
