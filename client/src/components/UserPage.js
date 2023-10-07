@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Review from "./Review";
+import { useHistory } from "react-router-dom";
 
 function UserPage({currentUser, trips}){
     const [reviews, setReviews] = useState([])
@@ -9,6 +10,7 @@ function UserPage({currentUser, trips}){
         bio:user.bio,
         image_url:user.image_url,
     })
+    const history = useHistory()
     
     useEffect(() => {
         fetch(`/${user.id}/reviews`)
@@ -47,12 +49,28 @@ function UserPage({currentUser, trips}){
         setShowUserEdit('none')
     }
 
+    function handleDeleteClick(){
+        fetch(`/user/${user.id}`, {
+            method:"DELETE"
+        })
+        .then(() => alert('User successfully deleted.'))
+        
+        fetch('/logout', {method: "DELETE"})
+        .then((r)=> {
+            if (r.ok){
+                setUser(null)
+            }
+        })
+        .then(() => history.push('/'))
+    }
+
     return (
         <div className="user-card">
         <img src={`${user.image_url}`} alt="User avatar"/>
         <h1>{user.username}</h1>
         <p><b>Bio:</b> {user.bio}</p>
         <button onClick={() => setShowUserEdit('block')}>Edit User Info</button>
+        <button onClick={handleDeleteClick}>Delete User</button>
         <form onSubmit={handleSubmit} style={{display:showUserEdit}}>
             <h4>New Bio:</h4>
             <input 
