@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import { useParams } from "react-router-dom";
 import Review from "./Review";
 
-function TripReviews({currentUser}){
+function TripReviews({currentUser, trips}){
     const [reviews, setReviews] = useState([])
     const [trip, setTrip] = useState({})
     const { id } = useParams()
@@ -31,6 +31,7 @@ function TripReviews({currentUser}){
                 key={review.id}
                 reviewData={review}
                 currentUser={currentUser}
+                trips={trips}
                 />}
             )}
         </div>
