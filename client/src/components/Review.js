@@ -1,5 +1,6 @@
 import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 function Review({reviewData, currentUser, trips}){
     // const {review, date_created, user_id, trip_id} = reviewData
@@ -11,6 +12,7 @@ function Review({reviewData, currentUser, trips}){
         review:review.review,
         trip_id:review.trip_id
     })
+    const history = useHistory()
 
     useEffect(() => {
         fetch(`/user/${review.user_id}`)
@@ -52,17 +54,27 @@ function Review({reviewData, currentUser, trips}){
         setShowForm('none')
     }
 
+    function handleDeleteClick(){
+        fetch(`/${currentUser.id}/review/${review.id}`, {method:"DELETE"})
+        .then(() => alert('Review successfully deleted'))
+        .then(() => {
+            setReview(null)
+            history.push(`/userreviews/${currentUser.id}`)
+            window.location.reload(false)
+        })
+    }
+
     return (
         <div className="review-card">
-            <h3>User:</h3> 
-            <Link to={`/userreviews/${review.user_id}`}>
-                {user.username}
-            </Link>
+            <h3>User: {user.username ? <Link to={`/userreviews/${review.user_id}`}>{user.username}</Link> : 'Deleted'}</h3>
             <p>{review.review}</p>
             <p><b>Date Created:</b> {review.date_created.slice(0,10)}</p>
             <p><em><u>Trip:</u></em> {trip.id}. {trip.destination}</p>
             {currentUser.id === review.user_id && (
+                <>
                 <button onClick={() => setShowForm('block')}>Edit Review</button>
+                <button onClick={handleDeleteClick}>Delete Review</button>
+                </>
             )}
             <form onSubmit={handleSubmit} style={{display:showForm}}>
                 <h4>Review:</h4>
