@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-function NavBar({setUser}){
+function NavBar({user, setUser}){
     function handleLogout(){
         fetch('/logout', { method: "DELETE"})
         .then((r) => {
@@ -44,6 +44,14 @@ function NavBar({setUser}){
             <button onClick={handleLogout}>
                 Logout
             </button>
+            <NavLink
+            to={`/${user.username}`}
+            exact
+            className='user-navlink'
+            >
+            {user.username}
+            </NavLink>
+
         </nav>
     )
 }
