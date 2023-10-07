@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 function NewReview({user, trips}){
     const [form, setForm] = useState({
         review:'',
-        trip_id:''
+        trip_id:1
     })
     const history = useHistory()
 
@@ -60,7 +60,7 @@ function NewReview({user, trips}){
             <h4>Trip ID:</h4>
             <select id='trip_id' name='trip_id' onChange={handleChange} value={form.trip_id}>
                 {trips.map((trip) => {
-                    return <option value={trip.id} key={trip.id} >{trip.id}</option>
+                    return <option value={trip.id} key={trip.id}>{trip.id}</option>
                 })}
             </select>
             <button type="submit">Add review</button>
