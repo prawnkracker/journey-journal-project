@@ -184,13 +184,14 @@ class UserId(Resource):
         return user.to_dict(), 200
     
     def patch(self, id):
+        json=request.get_json()
         user = User.query.filter(User.id == id).first()
         if user is None:
             return {"message":"No user found."}, 404
         if user.id != session['user_id']:
             return {"Error":"Unauthorized."}, 401
-        for attr in request.form:
-            setattr(user, attr, request.form.get(attr))
+        for attr in json:
+            setattr(user, attr, json.get(attr))
         try:
             db.session.add(user)
             db.session.commit()
