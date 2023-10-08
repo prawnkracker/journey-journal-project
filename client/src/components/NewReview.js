@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-// import TripList from "./TripList";
 
 function NewReview({user, trips}){
     const [form, setForm] = useState({
@@ -45,26 +44,30 @@ function NewReview({user, trips}){
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h4>Review:</h4>
-            <input
-                type="text"
-                size='50'
-                placeholder="Review..."
-                name="review"
-                id="review"
-                autoComplete="off"
-                value={form.review}
-                onChange={handleChange}
-            />
-            <h4>Trip ID:</h4>
-            <select id='trip_id' name='trip_id' onChange={handleChange} value={form.trip_id}>
-                {trips.map((trip) => {
-                    return <option value={trip.id} key={trip.id}>{trip.id}</option>
-                })}
-            </select>
-            <button type="submit">Add review</button>
-        </form>
+        <div className="new-review">
+            <h1>Add a new review for a trip!</h1>
+            <form onSubmit={handleSubmit}>
+                <h4>Review:</h4>
+                <input
+                    type="text"
+                    size='50'
+                    placeholder="Review..."
+                    name="review"
+                    id="review"
+                    autoComplete="off"
+                    value={form.review}
+                    onChange={handleChange}
+                />
+                <h4>Trip ID:</h4>
+                <select id='trip_id' name='trip_id' onChange={handleChange} value={form.trip_id}>
+                    {trips.map((trip) => {
+                        return <option value={trip.id} key={trip.id}>{trip.id}</option>
+                    })}
+                </select>
+                <br></br>
+                <button type="submit">Add review</button>
+            </form>
+        </div>
     )
 }
 

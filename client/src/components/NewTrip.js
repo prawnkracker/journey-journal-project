@@ -55,49 +55,53 @@ function NewTrip(){
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h4>Destination:</h4>
-            <input
-                type="text"
-                placeholder="Destination..."
-                name="destination"
-                id="destination"
-                autoComplete="off"
-                value={form.destination}
-                onChange={handleChange}
-            />
-            <h4>Approximate Cost:</h4>
-            <input
-                type="number"
-                placeholder="Approximate Cost..."
-                name="approximate_cost"
-                id="approximate_cost"
-                autoComplete="off"
-                value={form.approximate_cost}
-                onChange={handleChange}
-            />
-            <h4>Description:</h4>
-            <input
-                type="text"
-                placeholder="Description..."
-                name="description"
-                id="description"
-                autoComplete="off"
-                value={form.description}
-                onChange={handleChange}
-            />
-            <h4>Image:</h4>
-            <input
-                type="text"
-                placeholder="Image URL..."
-                name="trip_image_url"
-                id="trip_image_url"
-                autoComplete="off"
-                value={form.trip_image_url}
-                onChange={handleChange}
-            />
-            <button type="submit">Add trip</button>
-        </form>
+        <div className="new-trip">
+            <h1>Add a new trip to the trip list!</h1>
+            <form onSubmit={handleSubmit}>
+                <h4>Destination:</h4>
+                <input
+                    type="text"
+                    placeholder="Destination..."
+                    name="destination"
+                    id="destination"
+                    autoComplete="off"
+                    value={form.destination}
+                    onChange={handleChange}
+                />
+                <h4>Approximate Cost:</h4>
+                <input
+                    type="number"
+                    placeholder="Approximate Cost..."
+                    name="approximate_cost"
+                    id="approximate_cost"
+                    autoComplete="off"
+                    value={form.approximate_cost}
+                    onChange={handleChange}
+                />
+                <h4>Description:</h4>
+                <input
+                    type="text"
+                    placeholder="Description..."
+                    name="description"
+                    id="description"
+                    autoComplete="off"
+                    value={form.description}
+                    onChange={handleChange}
+                />
+                <h4>Image:</h4>
+                <input
+                    type="text"
+                    placeholder="Image URL..."
+                    name="trip_image_url"
+                    id="trip_image_url"
+                    autoComplete="off"
+                    value={form.trip_image_url}
+                    onChange={handleChange}
+                />
+                <br></br>
+                <button type="submit">Add trip</button>
+            </form>
+        </div>
     )
 }
 
