@@ -59,16 +59,24 @@ function Review({reviewData, currentUser, trips}){
         .then(() => alert('Review successfully deleted'))
         .then(() => {
             setReview(null)
-            history.push(`/userreviews/${currentUser.id}`)
+            history.push(`/${currentUser.username}`)
             window.location.reload(false)
         })
+    }
+
+    function handleCloseForm() {
+        setForm({
+            review: review.review,
+            trip_id: review.trip_id
+        });
+        setShowForm('none');
     }
 
     return (
         <div className="review-card">
             <h3>User: {user.username ? <Link to={`/userreviews/${review.user_id}`}>{user.username}</Link> : 'Deleted'}</h3>
             <p>{review.review}</p>
-            <p><b>Date Created:</b> {review.date_created.slice(0,10)}</p>
+            <p><b>Date:</b> {review.date_created.slice(0,10)}</p>
             <p><em><u>Trip:</u></em> {trip.id}. {trip.destination}</p>
             {currentUser.id === review.user_id && (
                 <>
@@ -96,7 +104,7 @@ function Review({reviewData, currentUser, trips}){
                     return <option value={trip.id} key={trip.id}>{trip.id}</option>
                 })}
             </select>
-                <button onClick={()=> setShowForm('none')}>Close</button>
+                <button onClick={handleCloseForm}>Close</button>
                 <button type="submit">Update Review</button>
             </form>
         </div>)

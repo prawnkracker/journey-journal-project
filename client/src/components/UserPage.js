@@ -70,6 +70,14 @@ function UserPage({currentUser, trips, setAppUser}){
         .then(() => history.push('/'))
     }
 
+    function handleCloseForm() {
+        setForm({
+            bio: user.bio,
+            image_url: user.image_url
+        });
+        setShowUserEdit('none');
+    }
+
     return (
         <div className="user-card">
         <img src={`${imageUrl}`} alt="User avatar"/>
@@ -97,7 +105,7 @@ function UserPage({currentUser, trips, setAppUser}){
                 onChange={handleChange}
             />
             <button type="submit">Update User</button>
-            <button onClick={() => setShowUserEdit('none')}>Close</button>
+            <button onClick={handleCloseForm}>Close</button>
         </form>
         <h2>Reviews:</h2>
         {reviews.map((review) => {
