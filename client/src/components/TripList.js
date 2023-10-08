@@ -5,7 +5,7 @@ import Trip from "./Trip"
 function TripList({trips}){
 
     return (
-        <div className="trip-list-cards">
+        <div id="trip-list">
             <h1>Trip List</h1>
             <ul>
                 {trips.map((trip) => {
