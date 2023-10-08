@@ -51,7 +51,7 @@ function SignupForm({onLogin}){
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className='login-form' onSubmit={handleSubmit}>
             <h4>Username:</h4>
                 <input
                     type='text'
@@ -92,6 +92,7 @@ function SignupForm({onLogin}){
                     value={form.image_url}
                     onChange={handleChange}
                 />
+            <br></br>
             <button type="submit">Sign Up</button>
         </form>
     )

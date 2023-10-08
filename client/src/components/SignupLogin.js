@@ -9,15 +9,19 @@ function SignupLogin({onLogin}){
         <>
             {login ? 
             (<div>
-            <LoginForm onLogin={onLogin}/>
-            <p>No account? Sign up for one.</p>
-            <button onClick={() => setLogin(false)}>Sign up</button>
+                <LoginForm onLogin={onLogin}/>
+                <div className="login">
+                <p>No account? Sign up for one.</p>
+                <button onClick={() => setLogin(false)}>Sign up</button>
+                </div>
             </div>)
         : 
             (<div>
-            <SignupForm onLogin={onLogin}/>
-            <p>Already have an account? Login.</p>
-            <button onClick={() => setLogin(true)}>Sign in</button>
+                <SignupForm onLogin={onLogin}/>
+                <div className="login">
+                <p>Already have an account? Login.</p>
+                <button onClick={() => setLogin(true)}>Sign in</button>
+                </div>
             </div>
             )}
         </>

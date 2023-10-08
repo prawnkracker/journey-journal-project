@@ -42,7 +42,7 @@ function LoginForm({onLogin}){
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className='login-form' onSubmit={handleSubmit}>
                 <h4>Username:</h4>
                 <input
                     type='text'
@@ -63,6 +63,7 @@ function LoginForm({onLogin}){
                     value={form.password}
                     onChange={handleChange}
                 />
+            <br></br>
             <button type='submit'>Login</button>
         </form>
     );
