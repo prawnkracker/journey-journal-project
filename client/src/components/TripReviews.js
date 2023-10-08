@@ -20,12 +20,12 @@ function TripReviews({currentUser, trips}){
     if (reviews.length > 0){
     
     return (
-        <div className="trip-reviews-card">
-            <h1>Destination: {trip.destination}</h1>
+        <div className="trip-card">
+            <h1>{trip.id}. {trip.destination}</h1>
             <img src={trip.trip_image_url} alt='Destination'/>
             <h2>Approximate Cost: ${trip.approximate_cost}</h2>
             <p><b>Description:</b> {trip.description}</p>
-            <h2>Reviews:</h2>
+            <h2><u>Reviews</u></h2>
             {reviews.map((review) => {
                 return <Review 
                 key={review.id}
