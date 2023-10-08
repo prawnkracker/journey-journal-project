@@ -16,45 +16,48 @@ function NavBar({user, setUser}){
     
     return (
         <nav className="navbar">
-            <NavLink
-            to='/'
-            exact
-            className='navlink'
-            >
-            Home
-            </NavLink>
-            <NavLink
-            to='/trips'
-            exact
-            className='navlink'
-            >
-            Trips
-            </NavLink>
-            <NavLink
-            to='/newtrip'
-            exact
-            className='navlink'
-            >
-            New Trip
-            </NavLink>
-            <NavLink
-            to='/newreview'
-            exact
-            className='navlink'
-            >
-            New Review
-            </NavLink>
-            <button onClick={handleLogout}>
-                Logout
-            </button>
-            <NavLink
-            to={`/${user.username}`}
-            exact
-            className='user-navlink'
-            >
-            {user.username}
-            </NavLink>
-
+            <div>
+                <NavLink
+                to='/'
+                exact
+                className='navlink'
+                >
+                Home
+                </NavLink>
+                <NavLink
+                to='/trips'
+                exact
+                className='navlink'
+                >
+                Trips
+                </NavLink>
+                <NavLink
+                to='/newtrip'
+                exact
+                className='navlink'
+                >
+                New Trip
+                </NavLink>
+                <NavLink
+                to='/newreview'
+                exact
+                className='navlink'
+                >
+                New Review
+                </NavLink>
+            </div>
+            <div>
+                <NavLink
+                to={`/${user.username}`}
+                exact
+                className='navlink'
+                >
+                {user.username}
+                </NavLink>
+                <button onClick={handleLogout} id="logout">
+                    Logout
+                </button>
+            </div>
         </nav>
     )
 }
