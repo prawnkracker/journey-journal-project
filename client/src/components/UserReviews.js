@@ -21,6 +21,7 @@ function UserReviews({currentUser, trips}){
         <div className="user-reviews-card">
             <img src={user.image_url} alt='User avatar'/>
             <h1>User: {user.username}</h1>
+            <p><b>Bio:</b> {user.bio}</p>
             <h2>Reviews:</h2>
             {reviews.map((review) => {
                 return <Review 
